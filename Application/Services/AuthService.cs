@@ -12,7 +12,8 @@ public class AuthService : IAuthService
     }
     public async Task<IdentityResult> RegisterUser(User user, string Password)
     {
-        return await _userRepository.AddAsync(user, Password);
+       return await _userRepository.AddAsync(user, Password);
+       
        
        
 
@@ -30,7 +31,9 @@ public class AuthService : IAuthService
             return null;
 
         }
-        var token = _tokenService.GenerateToken(user.UserName, user.Role);
+        var role = await _userRepository.GetRole(user);
+        Console.WriteLine(role);
+        var token = _tokenService.GenerateToken(user.UserName,role);
         return token;
         
     }

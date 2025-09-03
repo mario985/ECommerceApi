@@ -9,4 +9,5 @@ public interface IUserRepository
     Task<User?> GetByNameAsync(string Name);
     Task<IdentityResult> UpdateAsync(User user);
     Task<bool> CheckPassword(User user, string Password);
+    Task<string> GetRole(User user);
 }

@@ -15,8 +15,6 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, IdentityR
             Email = request.Email,
             UserName = request.FullName,
             Address = request.Address,
-            Role = request.Role
-
         };
          return await _authService.RegisterUser(user, request.Password);
        

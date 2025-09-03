@@ -12,8 +12,13 @@ public class UserRepository : IUserRepository
 
     public async Task<IdentityResult> AddAsync(User user, string password)
     {
-        return await _userManager.CreateAsync(user, password);
-       
+
+        var result = await _userManager.CreateAsync(user, password);
+        if (result.Succeeded)
+        {
+            await _userManager.AddToRoleAsync(user, "User");
+        }
+        return result;
     }
 
     public async Task<bool> CheckPassword(User user, string password)
@@ -39,6 +44,13 @@ public class UserRepository : IUserRepository
     public async Task<IdentityResult> UpdateAsync(User user)
     {
         return await _userManager.UpdateAsync(user);
+
+    }
+    public async Task<string?> GetRole(User user)
+    {
+        var roles = await _userManager.GetRolesAsync(user);
+        return roles.FirstOrDefault();
        
+        
     }
 }

@@ -9,7 +9,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllers();
-
+builder.Services.AddControllers(Options =>
+{
+    Options.Filters.Add<ApiResponseFilter>();
+});
 // 🔥 Add Swagger services
 
 builder.Services.AddDbContext<AppDbContext>(Options =>
@@ -79,6 +82,18 @@ builder.Services.AddMediatR(cfg =>
 
 
 var app = builder.Build();
+app.Lifetime.ApplicationStarted.Register(async () =>
+{
+
+    using var scope = app.Services.CreateScope();
+    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
+    await IdentitySeeder.SeedRoleAsync(roleManager);
+    await IdentitySeeder.SeedAdminAsync(userManager);
+
+
+}
+);
 
 // 🔥 Enable Swagger middleware
 if (app.Environment.IsDevelopment())
