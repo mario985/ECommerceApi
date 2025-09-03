@@ -6,6 +6,7 @@ public class User : IdentityUser
     public ICollection<Order>? Orders { set; get; }
     public Cart? Cart { set; get; }
     public WishList? WishList { set; get; }
+     public string Role { get; set; } = "User";
     
 
 }
