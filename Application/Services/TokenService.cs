@@ -30,7 +30,7 @@ public class TokenService : ItokenService
             issuer: _config["JWT:Issuer"],
             audience: _config["JWT:Audience"],
             claims: claims,
-            expires: DateTime.Now.AddMinutes(15), 
+            expires: DateTime.Now.AddMinutes(1), 
             signingCredentials: creds
         );
 

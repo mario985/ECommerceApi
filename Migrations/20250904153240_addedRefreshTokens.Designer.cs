@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -9,9 +10,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ECommerceApi.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250904153240_addedRefreshTokens")]
+    partial class addedRefreshTokens
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.8");
@@ -270,38 +273,6 @@ namespace ECommerceApi.Migrations
                     b.ToTable("Product");
                 });
 
-            modelBuilder.Entity("RefreshToken", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("ExpiresOn")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime?>("RevokedOn")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Token")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("UserId1")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId1");
-
-                    b.ToTable("refreshTokens");
-                });
-
             modelBuilder.Entity("User", b =>
                 {
                     b.Property<string>("Id")
@@ -518,13 +489,39 @@ namespace ECommerceApi.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("RefreshToken", b =>
+            modelBuilder.Entity("User", b =>
                 {
-                    b.HasOne("User", "User")
-                        .WithMany("RefreshTokens")
-                        .HasForeignKey("UserId1");
+                    b.OwnsMany("RefreshToken", "RefreshTokens", b1 =>
+                        {
+                            b1.Property<string>("UserId")
+                                .HasColumnType("TEXT");
 
-                    b.Navigation("User");
+                            b1.Property<int>("Id")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("INTEGER");
+
+                            b1.Property<DateTime>("CreatedOn")
+                                .HasColumnType("TEXT");
+
+                            b1.Property<DateTime>("ExpiresOn")
+                                .HasColumnType("TEXT");
+
+                            b1.Property<DateTime?>("RevokedOn")
+                                .HasColumnType("TEXT");
+
+                            b1.Property<string>("Token")
+                                .IsRequired()
+                                .HasColumnType("TEXT");
+
+                            b1.HasKey("UserId", "Id");
+
+                            b1.ToTable("RefreshToken");
+
+                            b1.WithOwner()
+                                .HasForeignKey("UserId");
+                        });
+
+                    b.Navigation("RefreshTokens");
                 });
 
             modelBuilder.Entity("WishList", b =>
@@ -572,8 +569,6 @@ namespace ECommerceApi.Migrations
                     b.Navigation("Cart");
 
                     b.Navigation("Orders");
-
-                    b.Navigation("RefreshTokens");
 
                     b.Navigation("WishList");
                 });

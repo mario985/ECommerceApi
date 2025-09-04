@@ -1,13 +1,16 @@
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 
 public class UserRepository : IUserRepository
 {
     private readonly UserManager<User> _userManager;
+    private readonly AppDbContext _context;
 
-    public UserRepository(UserManager<User> userManager)
+    public UserRepository(UserManager<User> userManager, AppDbContext dbContext)
     {
         _userManager = userManager;
+        _context = dbContext;
     }
 
     public async Task<IdentityResult> AddAsync(User user, string password)
@@ -29,6 +32,12 @@ public class UserRepository : IUserRepository
     public async Task<User?> GetByEmailAsync(string email)
     {
         return await _userManager.FindByEmailAsync(email);
+    }
+    public async Task<User?> GetByEmailWithTokensAsync(string email)
+    {
+        return await _context.Users
+            .Include(u => u.RefreshTokens)
+            .SingleOrDefaultAsync(u => u.Email == email);
     }
 
     public async Task<User?> GetByIdAsync(string id)
@@ -52,5 +61,10 @@ public class UserRepository : IUserRepository
         return roles.FirstOrDefault();
        
         
+    }
+
+    public async Task<User?> FindByRefreshToken(string token)
+    {
+        return await _context.Users.Include(t => t.RefreshTokens).SingleOrDefaultAsync(u => u.RefreshTokens.Any(t => t.Token == token));
     }
 }
