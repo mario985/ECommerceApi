@@ -41,28 +41,21 @@ public class AuthService : IAuthService
         var role = await _userRepository.GetRole(user);
         Console.WriteLine(role);
         var token = _tokenService.GenerateToken(user.UserName, role);
-
+         var NewrefreshToken = _refreshTokenService.GenerateRefreshToken();
+        foreach (var tok in user.RefreshTokens.Where(t => t.IsActive))
+        {
+            tok.RevokedOn = DateTime.UtcNow;
+        }
+        user.RefreshTokens.Add(NewrefreshToken);
+        await _userRepository.UpdateAsync(user);
         response.Message = "User Logged in successfully";
         response.Email = user.Email;
         response.Role = role;
         response.IsAuthenticated = true;
         response.UserName = user.UserName;
         response.Token = token;
-        if (user.RefreshTokens!=null &&user.RefreshTokens.Any(t => t.IsActive))
-        {
-            var activeRefreshToken = user.RefreshTokens.FirstOrDefault(t => t.IsActive);
-            response.RefreshToken = activeRefreshToken.Token;
-            response.RefreshTokenExpiration = activeRefreshToken.ExpiresOn;
-
-        }
-        else
-        {
-            var refreshToken = _refreshTokenService.GenerateRefreshToken();
-            response.RefreshToken = refreshToken.Token;
-            response.RefreshTokenExpiration = refreshToken.ExpiresOn;
-            user.RefreshTokens.Add(refreshToken);
-            await _userRepository.UpdateAsync(user);
-        }
+         response.RefreshToken = NewrefreshToken.Token;
+        response.RefreshTokenExpiration = NewrefreshToken.ExpiresOn;
         return response;
         
     }
@@ -70,7 +63,7 @@ public class AuthService : IAuthService
     public async Task<AuthModel> RefreshTokenAsync(string token)
     {
         AuthModel response = new AuthModel();
-        var user = await _userRepository.FindByRefreshToken(token);
+        var user = await _userRepository.FindByRefreshTokenAsync(token);
         if (user == null)
         {
             response.IsAuthenticated = false;
@@ -105,7 +98,7 @@ public class AuthService : IAuthService
 
     public async Task<bool> RevokeTokenAsync(string token)
     {
-        var user = await _userRepository.FindByRefreshToken(token);
+        var user = await _userRepository.FindByRefreshTokenAsync(token);
         if (user == null)
             return false;
         var refreshToken = user.RefreshTokens.Single(t => t.Token == token);
@@ -115,5 +108,18 @@ public class AuthService : IAuthService
         await _userRepository.UpdateAsync(user);
         return true;
         
+    }
+
+    public async Task<bool> RevokeAllTokensAsync(string token)
+    {
+        var user = await _userRepository.FindByRefreshTokenAsync(token);
+        if (user == null)
+            return false;
+        foreach (var tok in user.RefreshTokens.Where(t => t.IsActive))
+        {
+            tok.RevokedOn = DateTime.UtcNow;
+        }
+        await _userRepository.UpdateAsync(user);
+        return true;
     }
 }

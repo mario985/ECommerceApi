@@ -87,6 +87,21 @@ public class AccountController : ControllerBase
         return Ok();
 
     }
+      [HttpPost("revokeAll")]
+    public async Task<IActionResult> RevokeAllToken([FromBody]RevokeTokenDto revokeToken)
+    {
+        var token = revokeToken.Token ?? Request.Cookies["RefreshToken"];
+        if (string.IsNullOrEmpty(token))
+        {
+            return BadRequest("token is required");
+        }
+        var result = await _authService.RevokeAllTokensAsync(token);
+        if (!result)
+        {
+            return BadRequest("Token is invalid");
+        }
+        return Ok();
+    }
     
     private void SetRefreshTokenCookie(string refreshToken, DateTime expires)
     {

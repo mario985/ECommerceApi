@@ -63,7 +63,7 @@ public class UserRepository : IUserRepository
         
     }
 
-    public async Task<User?> FindByRefreshToken(string token)
+    public async Task<User?> FindByRefreshTokenAsync(string token)
     {
         return await _context.Users.Include(t => t.RefreshTokens).SingleOrDefaultAsync(u => u.RefreshTokens.Any(t => t.Token == token));
     }

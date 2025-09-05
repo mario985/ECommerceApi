@@ -25,12 +25,12 @@ public class TokenService : ItokenService
             Encoding.UTF8.GetBytes(_config["JWT:Key"]));
 
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-
+        var lifetimeMinutes = double.Parse(_config["JWT:AccessTokenLifetimeMinutes"]);
         var token = new JwtSecurityToken(
             issuer: _config["JWT:Issuer"],
             audience: _config["JWT:Audience"],
             claims: claims,
-            expires: DateTime.Now.AddMinutes(1), 
+            expires: DateTime.Now.AddMinutes(lifetimeMinutes), 
             signingCredentials: creds
         );
 

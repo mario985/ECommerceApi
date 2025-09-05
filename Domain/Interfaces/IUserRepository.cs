@@ -10,6 +10,6 @@ public interface IUserRepository
     Task<IdentityResult> UpdateAsync(User user);
     Task<bool> CheckPassword(User user, string Password);
     Task<string> GetRole(User user);
-    Task<User?> FindByRefreshToken(string token);
+    Task<User?> FindByRefreshTokenAsync(string token);
     public  Task<User?> GetByEmailWithTokensAsync(string email);
 }

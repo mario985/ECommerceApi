@@ -6,4 +6,5 @@ public interface IAuthService
     Task<AuthModel> LogInAsync(string Email, string Password);
     Task<AuthModel> RefreshTokenAsync(string token);
     Task<bool> RevokeTokenAsync(string token);
+    Task<bool> RevokeAllTokensAsync(string token);
 }
