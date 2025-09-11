@@ -1,10 +1,4 @@
-
-
 using AutoMapper;
-using Microsoft.EntityFrameworkCore.Storage;
-using Microsoft.Extensions.Options;
-using MongoDB.Driver;
-
 public class ProductService : IProductService
 {
     private readonly IMapper _mapper;
@@ -14,10 +8,11 @@ public class ProductService : IProductService
         _productRepository = productRepository;
         _mapper = mapper;
     }
-        public async Task<List<ProductDto>> GetProducts(ProdcutFilterDto prodcutFilterDto)
+        public async Task<List<ProductDto>> GetProductsAsync(ProdcutFilterDto prodcutFilterDto)
     {
         var products = await _productRepository.GetProductsAsync
-        (prodcutFilterDto.Category,
+        (prodcutFilterDto.Name,
+         prodcutFilterDto.Category,
          prodcutFilterDto.MaxPrice,
           prodcutFilterDto.MinPrice,
           prodcutFilterDto.SortBy,
@@ -43,7 +38,7 @@ public class ProductService : IProductService
         await _productRepository.CreateAsync(product);
         return;
     }
-     public async Task<bool> UpdateProductAsync(string id, UpdateProductDto productDto)
+     public async Task<UpdateResult> UpdateProductAsync(string id, UpdateProductDto productDto)
     {
         
         var product = _mapper.Map<Product>(productDto);
@@ -51,7 +46,7 @@ public class ProductService : IProductService
         
     }
 
-    public async Task<bool> DeleteProductAsync(string id)
+    public async Task<UpdateResult> DeleteProductAsync(string id)
     {
         return await _productRepository.DeleteAsync(id);
        

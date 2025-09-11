@@ -15,6 +15,7 @@ public class Product
     public ProductCategory Category { get; set; }
 
     [BsonElement("price")]
+    [BsonRepresentation(BsonType.Double)]
     public decimal Price { get; set; }
 
     [BsonElement("imageUrl")]

@@ -1,8 +1,8 @@
 public interface IProductService
 {
      Task<ProductDto?> GetProductById(string Id);
-    Task<List<ProductDto>> GetProducts(ProdcutFilterDto prodcutFilterDto);
+    Task<List<ProductDto>> GetProductsAsync(ProdcutFilterDto prodcutFilterDto);
     Task AddProductAsync(CreateProductDto product);
-    Task<bool> UpdateProductAsync(string id, UpdateProductDto product);
-    Task<bool> DeleteProductAsync(string id);
+    Task<UpdateResult> UpdateProductAsync(string id, UpdateProductDto product);
+    Task<UpdateResult> DeleteProductAsync(string id);
 }

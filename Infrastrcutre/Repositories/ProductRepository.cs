@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
+using MongoDB.Bson;
 public class ProductRepository :IProductRepository
 {
     private readonly IMongoCollection<Product> _products;
@@ -11,10 +12,11 @@ public class ProductRepository :IProductRepository
         _products = dataBase.GetCollection<Product>(mongoDbSettings.Value.CollectionName);
     }
     public async Task<List<Product>> GetProductsAsync(
+    string?name,
     ProductCategory? category,
-    decimal? minPrice,
     decimal? maxPrice,
-    string? sortBy,
+    decimal? minPrice,
+    SortField? sortBy,
     string? brand,
     bool sortDesc,
     int page,
@@ -22,7 +24,9 @@ public class ProductRepository :IProductRepository
     {
         var filterBuilder = Builders<Product>.Filter;
         var filters = new List<FilterDefinition<Product>>();
-
+        if(!string.IsNullOrEmpty(name))
+            filters.Add(filterBuilder.Eq(p => p.Name, name));
+        
         if (category.HasValue)
             filters.Add(filterBuilder.Eq(p => p.Category, category));
 
@@ -40,11 +44,12 @@ public class ProductRepository :IProductRepository
         var sortBuilder = Builders<Product>.Sort;
         SortDefinition<Product>? sort = null;
 
-        if (!string.IsNullOrEmpty(sortBy))
+        if (sortBy.HasValue)
         {
+            var sortValue = sortBy.ToString();
             sort = sortDesc
-                ? sortBuilder.Descending(sortBy)
-                : sortBuilder.Ascending(sortBy);
+                ? sortBuilder.Descending(sortValue)
+                : sortBuilder.Ascending(sortValue);
         }
 
         // Pagination
@@ -67,16 +72,59 @@ public class ProductRepository :IProductRepository
     {
         await _products.InsertOneAsync(product);
     }
-    public async Task<bool> DeleteAsync(string id)
+    public async Task<UpdateResult> DeleteAsync(string id)
     {
-        var result = await _products.DeleteOneAsync(p => p.Id == id);
-        return result.IsAcknowledged && result.DeletedCount  > 0;
+        if (!ObjectId.TryParse(id, out _))
+        {
+            return new UpdateResult { Success = false, Message = $"the provided id {id} not a vlalid id" };
+        }
+        try
+        {
+            var result = await _products.DeleteOneAsync(p => p.Id == id);
+            if (!result.IsAcknowledged)
+            {
+                return new UpdateResult { Success = false, Message = "Delete method not aknowledged" };
+
+            }
+            if (result.DeletedCount == 0)
+            {
+                return new UpdateResult { Success = false, Message = $"the proudct {id} not found" };
+
+            }
+            else return new UpdateResult { Success = true };
+        }
+        catch (MongoException ex)
+        {
+            return new UpdateResult { Success = false, Message = "Database error: " + ex.Message };
+        }
         
     }
-    public async Task<bool> UpdateAsync(string id, Product product)
+    public async Task<UpdateResult> UpdateAsync(string id, Product product)
     {
-        var result = await _products.ReplaceOneAsync(p => p.Id == id, product);
-        return result.IsAcknowledged && result.ModifiedCount > 0;
+        if (!ObjectId.TryParse(id, out _))
+        {
+            return new UpdateResult { Success = false, Message = $"the provided id {id} not a vlalid id" };
+        }
+        product.Id = id;
+         try
+        {
+            var result = await _products.ReplaceOneAsync(p => p.Id == id, product);
+            if (!result.IsAcknowledged)
+            {
+                return new UpdateResult { Success = false, Message = "Update method not aknowledged" };
+
+            }
+            if (result.ModifiedCount == 0)
+            {
+                return new UpdateResult { Success = true, Message = $"No changes were made" };
+
+            }
+            else return new UpdateResult { Success = true };
+        }
+        catch (MongoException ex)
+        {
+            return new UpdateResult { Success = false, Message = "Database error: " + ex.Message };
+        }
 
         
     }
