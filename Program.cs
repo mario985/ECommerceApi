@@ -74,7 +74,13 @@ builder.Services.AddAuthentication(options =>
             ClockSkew = TimeSpan.Zero
         };
     });
+builder.Services.AddAutoMapper(typeof(ProductProfile));
+builder.Services.Configure<MongoDbSetting>(
+builder.Configuration.GetSection("MongoDb"));
 builder.Services.AddAuthorization();
+builder.Services.AddSingleton<MongoDbInitializer>();
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<IProductService , ProductService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<ItokenService, TokenService>();
@@ -84,6 +90,8 @@ builder.Services.AddMediatR(cfg =>
 
 
 var app = builder.Build();
+var initializer = app.Services.GetRequiredService<MongoDbInitializer>();
+await initializer.CreateIndexesAsync();
 app.Lifetime.ApplicationStarted.Register(async () =>
 {
 

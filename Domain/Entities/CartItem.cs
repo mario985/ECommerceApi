@@ -6,9 +6,7 @@ public class CartItem
     [ForeignKey("Cart")]
     public int CartId { set; get; }
     public Cart Cart { set; get; } = null!;
-    [ForeignKey("Product")]   
-    public int ProductId { get; set; }
-    public Product Product { get; set; } = null!;
+    public string ProductId { get; set; } = string.Empty;
     public int Quantity { set; get; }
     
 }

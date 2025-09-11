@@ -167,3 +167,11 @@
 /Users/mariodawod/developer/backend_learning/ECommerceApi/obj/Debug/net9.0/ECommerceApi.pdb
 /Users/mariodawod/developer/backend_learning/ECommerceApi/obj/Debug/net9.0/ECommerceApi.genruntimeconfig.cache
 /Users/mariodawod/developer/backend_learning/ECommerceApi/obj/Debug/net9.0/ref/ECommerceApi.dll
+/Users/mariodawod/developer/backend_learning/ECommerceApi/bin/Debug/net9.0/DnsClient.dll
+/Users/mariodawod/developer/backend_learning/ECommerceApi/bin/Debug/net9.0/MongoDB.Bson.dll
+/Users/mariodawod/developer/backend_learning/ECommerceApi/bin/Debug/net9.0/MongoDB.Driver.dll
+/Users/mariodawod/developer/backend_learning/ECommerceApi/bin/Debug/net9.0/SharpCompress.dll
+/Users/mariodawod/developer/backend_learning/ECommerceApi/bin/Debug/net9.0/Snappier.dll
+/Users/mariodawod/developer/backend_learning/ECommerceApi/bin/Debug/net9.0/ZstdSharp.dll
+/Users/mariodawod/developer/backend_learning/ECommerceApi/bin/Debug/net9.0/AutoMapper.dll
+/Users/mariodawod/developer/backend_learning/ECommerceApi/bin/Debug/net9.0/AutoMapper.Extensions.Microsoft.DependencyInjection.dll

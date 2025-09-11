@@ -1,6 +1,7 @@
 
     public enum ProductCategory
     {
+        
         Electronics = 1,
         Fashion = 2,
         HomeAndKitchen = 3,

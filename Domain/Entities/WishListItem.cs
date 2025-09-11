@@ -6,7 +6,5 @@ public class WishListItem
     [ForeignKey("WishList")]
     public int WishListId { set; get; }
     public WishList WishList { set; get; } = null!;
-    [ForeignKey("Product")]
-    public int ProductId { set; get; }
-    public Product Product { set; get; } = null!;
+    public string ProductId { set; get; } = string.Empty;
 }

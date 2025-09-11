@@ -6,9 +6,7 @@ public class OrderItem
     [ForeignKey("Order")]
     public int OrderId { set; get; }
     public Order? Order { set; get; }
-    [ForeignKey("Product")]
-    public int ProductId { set; get; }
-    public Product? Product { set; get; }
+    public string ProductId { set; get; } = string.Empty;
     public int Quantity { set; get; }
     public decimal Price{ set; get; }
     
