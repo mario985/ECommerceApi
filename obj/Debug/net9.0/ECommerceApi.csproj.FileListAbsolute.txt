@@ -175,3 +175,5 @@
 /Users/mariodawod/developer/backend_learning/ECommerceApi/bin/Debug/net9.0/ZstdSharp.dll
 /Users/mariodawod/developer/backend_learning/ECommerceApi/bin/Debug/net9.0/AutoMapper.dll
 /Users/mariodawod/developer/backend_learning/ECommerceApi/bin/Debug/net9.0/AutoMapper.Extensions.Microsoft.DependencyInjection.dll
+/Users/mariodawod/developer/backend_learning/ECommerceApi/bin/Debug/net9.0/Pipelines.Sockets.Unofficial.dll
+/Users/mariodawod/developer/backend_learning/ECommerceApi/bin/Debug/net9.0/StackExchange.Redis.dll

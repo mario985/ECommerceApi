@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "H+sW0/Wbc20=",
+  "dgSpecHash": "Re7ozVruDKs=",
   "success": true,
   "projectFilePath": "/Users/mariodawod/developer/backend_learning/ECommerceApi/ECommerceApi.csproj",
   "expectedPackageFiles": [
@@ -60,12 +60,14 @@
     "/Users/mariodawod/.nuget/packages/mongodb.bson/3.4.3/mongodb.bson.3.4.3.nupkg.sha512",
     "/Users/mariodawod/.nuget/packages/mongodb.driver/3.4.3/mongodb.driver.3.4.3.nupkg.sha512",
     "/Users/mariodawod/.nuget/packages/mono.texttemplating/3.0.0/mono.texttemplating.3.0.0.nupkg.sha512",
+    "/Users/mariodawod/.nuget/packages/pipelines.sockets.unofficial/2.2.8/pipelines.sockets.unofficial.2.2.8.nupkg.sha512",
     "/Users/mariodawod/.nuget/packages/sharpcompress/0.30.1/sharpcompress.0.30.1.nupkg.sha512",
     "/Users/mariodawod/.nuget/packages/snappier/1.0.0/snappier.1.0.0.nupkg.sha512",
     "/Users/mariodawod/.nuget/packages/sqlitepclraw.bundle_e_sqlite3/2.1.10/sqlitepclraw.bundle_e_sqlite3.2.1.10.nupkg.sha512",
     "/Users/mariodawod/.nuget/packages/sqlitepclraw.core/2.1.10/sqlitepclraw.core.2.1.10.nupkg.sha512",
     "/Users/mariodawod/.nuget/packages/sqlitepclraw.lib.e_sqlite3/2.1.10/sqlitepclraw.lib.e_sqlite3.2.1.10.nupkg.sha512",
     "/Users/mariodawod/.nuget/packages/sqlitepclraw.provider.e_sqlite3/2.1.10/sqlitepclraw.provider.e_sqlite3.2.1.10.nupkg.sha512",
+    "/Users/mariodawod/.nuget/packages/stackexchange.redis/2.9.17/stackexchange.redis.2.9.17.nupkg.sha512",
     "/Users/mariodawod/.nuget/packages/swashbuckle.aspnetcore/9.0.4/swashbuckle.aspnetcore.9.0.4.nupkg.sha512",
     "/Users/mariodawod/.nuget/packages/swashbuckle.aspnetcore.swagger/9.0.4/swashbuckle.aspnetcore.swagger.9.0.4.nupkg.sha512",
     "/Users/mariodawod/.nuget/packages/swashbuckle.aspnetcore.swaggergen/9.0.4/swashbuckle.aspnetcore.swaggergen.9.0.4.nupkg.sha512",

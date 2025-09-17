@@ -1,4 +1,5 @@
 
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SQLitePCL;
 
@@ -6,21 +7,23 @@ using SQLitePCL;
 [ApiController]
 public class AdminProductController : ControllerBase
 {
-    private readonly IProductService _productService;
-    public AdminProductController(IProductService productService)
+    private readonly IAdminProductService _adminProductService;
+    public AdminProductController(IAdminProductService adminProductService)
     {
-        _productService = productService;
+        _adminProductService = adminProductService;
     }
     [HttpPost]
+    [Authorize(Roles ="Admin")]
     public async Task<IActionResult> Create(CreateProductDto createProductDto)
     {
-        await _productService.AddProductAsync(createProductDto);
+        await _adminProductService.AddProductAsync(createProductDto);
         return NoContent();
     }
-     [HttpPut("{id}")]
+    [HttpPut("{id}")]
+    [Authorize(Roles ="Admin")]
     public async Task<IActionResult> Update(string id, [FromBody] UpdateProductDto updateProductDto)
     {
-        var result = await _productService.UpdateProductAsync(id, updateProductDto);
+        var result = await _adminProductService.UpdateProductAsync(id, updateProductDto);
         if (result.Success == true)
         {
             return NoContent();
@@ -28,9 +31,10 @@ public class AdminProductController : ControllerBase
         else return BadRequest(new List<string> { result.Message });
     }
     [HttpDelete("{id}")]
+     [Authorize(Roles ="Admin")]
     public async Task<IActionResult> Delete(string id)
     {
-        var result = await _productService.DeleteProductAsync(id);
+        var result = await _adminProductService.DeleteProductAsync(id);
         if (result.Success == true)
         {
             return NoContent();
