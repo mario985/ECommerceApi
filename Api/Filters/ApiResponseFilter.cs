@@ -15,8 +15,13 @@ public class ApiResponseFilter : IActionFilter
                 isSuccess ? "Success" : "Failure",
                 null
             );
+             if (objectResult.Value is (object data, List<string> errors))
+            {
+                apiResponse.Data = data;
+                apiResponse.Errors = errors;
+            }
 
-            if (objectResult.Value is List<string> errorList && !isSuccess)
+            else if (objectResult.Value is List<string> errorList && !isSuccess)
             {
                 apiResponse.Errors = errorList;
             }

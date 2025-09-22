@@ -129,5 +129,9 @@ public class ProductRepository :IProductRepository
         
     }
 
-
+    public async Task<List<Product>> GetByIdsAsync(List<string> Ids)
+    {
+        var filter = Builders<Product>.Filter.In(p => p.Id, Ids);
+        return await _products.Find(filter).ToListAsync();
+    }
 }

@@ -42,7 +42,7 @@ public class UserRepository : IUserRepository
 
     public async Task<User?> GetByIdAsync(string id)
     {
-        return await _userManager.FindByIdAsync(id);
+        return await _context.Users.Include(u => u.Cart).Include(u => u.WishList).FirstOrDefaultAsync(u => u.Id == id);
     }
 
     public async Task<User?> GetByNameAsync(string name)

@@ -6,7 +6,9 @@ public class AppDbContext : IdentityDbContext<User>
 {
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
     public DbSet<User> Users { set; get; }
-    public DbSet<RefreshToken>refreshTokens{ set; get; }
+    public DbSet<RefreshToken> refreshTokens { set; get; }
+    public DbSet<Cart> cart { set; get; }
+    public DbSet<WishList>wishList{ set; get; }
 
     
 }

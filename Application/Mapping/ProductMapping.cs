@@ -7,7 +7,7 @@ public class ProductProfile : Profile
         CreateMap<Product, ProductDto>();
         CreateMap<Product, CreateProductDto>();
         CreateMap<Product, UpdateProductDto>();
-        CreateMap<UpdateProductDto, Product >();
+        CreateMap<UpdateProductDto, Product>();
         CreateMap<ProductDto, Product>();
         CreateMap<CreateProductDto, Product>();
     }
