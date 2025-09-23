@@ -31,7 +31,7 @@ namespace ECommerceApi.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("cart");
+                    b.ToTable("cart", (string)null);
                 });
 
             modelBuilder.Entity("CartItem", b =>
@@ -56,7 +56,7 @@ namespace ECommerceApi.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("CartItem");
+                    b.ToTable("CartItem", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -212,7 +212,7 @@ namespace ECommerceApi.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Order");
+                    b.ToTable("Order", (string)null);
                 });
 
             modelBuilder.Entity("OrderItem", b =>
@@ -238,7 +238,7 @@ namespace ECommerceApi.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.ToTable("OrderItem");
+                    b.ToTable("OrderItem", (string)null);
                 });
 
             modelBuilder.Entity("Product", b =>
@@ -270,7 +270,7 @@ namespace ECommerceApi.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Product");
+                    b.ToTable("Product", (string)null);
                 });
 
             modelBuilder.Entity("RefreshToken", b =>
@@ -302,7 +302,7 @@ namespace ECommerceApi.Migrations
 
                     b.HasIndex("UserId1");
 
-                    b.ToTable("refreshTokens");
+                    b.ToTable("refreshTokens", (string)null);
                 });
 
             modelBuilder.Entity("User", b =>
@@ -388,7 +388,7 @@ namespace ECommerceApi.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("wishList");
+                    b.ToTable("wishList", (string)null);
                 });
 
             modelBuilder.Entity("WishListItem", b =>
@@ -408,7 +408,7 @@ namespace ECommerceApi.Migrations
 
                     b.HasIndex("WishListId");
 
-                    b.ToTable("WishListItem");
+                    b.ToTable("WishListItem", (string)null);
                 });
 
             modelBuilder.Entity("Cart", b =>

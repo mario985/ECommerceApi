@@ -96,6 +96,8 @@ builder.Services.AddScoped<ItokenService, TokenService>();
 builder.Services.AddScoped<IRefreshTokenService, RefreshTokenService>();
 builder.Services.AddScoped<ICartRepository, CartRepository>();
 builder.Services.AddScoped<ICartService, CartService>();
+builder.Services.AddScoped<IWishListRepository, WishListRepository>();
+builder.Services.AddScoped<IWishListService, WishListService>();
 builder.Services.AddMediatR(cfg =>
     cfg.RegisterServicesFromAssembly(typeof(RegisterCommandHandler).Assembly));
 
@@ -106,6 +108,7 @@ builder.Services.AddSingleton<IConnectionMultiplexer>(sp =>
 });
 builder.Services.AddScoped<IRedisCacheService, RedisCacheService>();
 var app = builder.Build();
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 var initializer = app.Services.GetRequiredService<MongoDbInitializer>();
 await initializer.CreateIndexesAsync();
 app.Lifetime.ApplicationStarted.Register(async () =>
