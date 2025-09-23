@@ -2,6 +2,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ZstdSharp.Unsafe;
+using System.Security.Claims;
 [Route("Api/[controller]")]
 [ApiController]
 [Authorize]
@@ -47,8 +48,9 @@ public class WishListController : ControllerBase
     private string GetUserId()
 {
     var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        
     if (string.IsNullOrEmpty(userId))
-        throw new UnauthorizedAccessException("User not authenticated.");
+            throw new UnauthorizedAccessException("User not authenticated.");
     return userId;
 }
 }

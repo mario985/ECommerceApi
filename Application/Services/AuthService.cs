@@ -40,7 +40,7 @@ public class AuthService : IAuthService
         }
         var role = await _userRepository.GetRole(user);
         Console.WriteLine(role);
-        var token = _tokenService.GenerateToken(user.UserName, role);
+        var token = _tokenService.GenerateToken(user.UserName, role , user);
          var NewrefreshToken = _refreshTokenService.GenerateRefreshToken();
         foreach (var tok in user.RefreshTokens.Where(t => t.IsActive))
         {
@@ -84,7 +84,7 @@ public class AuthService : IAuthService
         await _userRepository.UpdateAsync(user);
         var role = await _userRepository.GetRole(user);
 
-        var newJwttoken = _tokenService.GenerateToken(user.UserName, role);
+        var newJwttoken = _tokenService.GenerateToken(user.UserName, role , user);
         response.IsAuthenticated = true;
         response.Email = user.Email;
         response.Role = role;

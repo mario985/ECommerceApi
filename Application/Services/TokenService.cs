@@ -9,18 +9,16 @@ public class TokenService : ItokenService
     {
         _config = configuration;
     }
-    public string GenerateToken(string UserName, string Role)
+    public string GenerateToken(string UserName, string Role , User user)
     {
         var claims = new List<Claim>
      {
-            new Claim(JwtRegisteredClaimNames.Sub, UserName),
+            new Claim(JwtRegisteredClaimNames.Email, UserName),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-            new Claim(ClaimTypes.Role, Role)
+            new Claim(ClaimTypes.Role, Role),
+            new Claim(ClaimTypes.NameIdentifier ,user.Id.ToString())
 
         };
-    
-        
-
         var key = new SymmetricSecurityKey(
             Encoding.UTF8.GetBytes(_config["JWT:Key"]));
 
