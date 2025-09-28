@@ -31,7 +31,7 @@ namespace ECommerceApi.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("cart", (string)null);
+                    b.ToTable("Cart");
                 });
 
             modelBuilder.Entity("CartItem", b =>
@@ -56,7 +56,25 @@ namespace ECommerceApi.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("CartItem", (string)null);
+                    b.ToTable("CartItem");
+                });
+
+            modelBuilder.Entity("Inventory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("ProductId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Inventories");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -212,7 +230,7 @@ namespace ECommerceApi.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Order", (string)null);
+                    b.ToTable("Order");
                 });
 
             modelBuilder.Entity("OrderItem", b =>
@@ -238,7 +256,7 @@ namespace ECommerceApi.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.ToTable("OrderItem", (string)null);
+                    b.ToTable("OrderItem");
                 });
 
             modelBuilder.Entity("Product", b =>
@@ -261,6 +279,9 @@ namespace ECommerceApi.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<bool>("IsAvailable")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -270,7 +291,7 @@ namespace ECommerceApi.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Product", (string)null);
+                    b.ToTable("Product");
                 });
 
             modelBuilder.Entity("RefreshToken", b =>
@@ -302,7 +323,7 @@ namespace ECommerceApi.Migrations
 
                     b.HasIndex("UserId1");
 
-                    b.ToTable("refreshTokens", (string)null);
+                    b.ToTable("RefreshTokens");
                 });
 
             modelBuilder.Entity("User", b =>
@@ -388,7 +409,7 @@ namespace ECommerceApi.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("wishList", (string)null);
+                    b.ToTable("WishList");
                 });
 
             modelBuilder.Entity("WishListItem", b =>
@@ -408,7 +429,7 @@ namespace ECommerceApi.Migrations
 
                     b.HasIndex("WishListId");
 
-                    b.ToTable("WishListItem", (string)null);
+                    b.ToTable("WishListItem");
                 });
 
             modelBuilder.Entity("Cart", b =>

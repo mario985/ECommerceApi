@@ -10,19 +10,19 @@ public class WishListRepository : IWishListRepository
     }
     public async Task AddWishListAsync(WishList wishList)
     {
-        await _appDbContext.wishList.AddAsync(wishList);
+        await _appDbContext.WishList.AddAsync(wishList);
         await _appDbContext.SaveChangesAsync();
     }
 
     public async Task<WishList?> GetByUserIdAsync(string userId)
     {
-        return await _appDbContext.wishList.Include(ws =>ws.WishListItems).FirstOrDefaultAsync(ws => ws.UserId == userId);
+        return await _appDbContext.WishList.Include(ws =>ws.WishListItems).FirstOrDefaultAsync(ws => ws.UserId == userId);
     }
 
     public async Task<WishList?> GetByUserIdReadOnlyAsync(string UserId)
     {
         return await _appDbContext
-        .wishList
+        .WishList
         .Include(ws => ws.WishListItems)
         .AsNoTracking()
         .FirstOrDefaultAsync(ws => ws.UserId == UserId);
@@ -31,7 +31,7 @@ public class WishListRepository : IWishListRepository
 
     public async Task UpdateAsync(WishList wishList)
     {
-        _appDbContext.wishList.Update(wishList);
+        _appDbContext.WishList.Update(wishList);
         await _appDbContext.SaveChangesAsync();
     }
 }

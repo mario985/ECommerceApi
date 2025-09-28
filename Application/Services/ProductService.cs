@@ -1,5 +1,6 @@
 using System.Text.Json;
 using AutoMapper;
+using MediatR;
 public class ProductService : IProductService
 {
     private readonly IMapper _mapper;
@@ -10,6 +11,7 @@ public class ProductService : IProductService
         _productRepository = productRepository;
         _mapper = mapper;
         _redisCacheService = redisCacheService;
+
     }
 public async Task<List<ProductDto>> GetProductsAsync(ProdcutFilterDto prodcutFilterDto)
 {

@@ -73,7 +73,7 @@ public class CartRepository : ICartRepository
 
     public async Task<Cart?> GetCartByUserIdAsync(string userId)
     {
-        var cart = await _dbContext.cart.Include(c => c.CartItems).FirstOrDefaultAsync(c => c.UserId == userId);
+        var cart = await _dbContext.Cart.Include(c => c.CartItems).FirstOrDefaultAsync(c => c.UserId == userId);
       
         return cart;
 
@@ -95,7 +95,7 @@ public class CartRepository : ICartRepository
     public async Task<Cart> AddCartAsync(string userId)
     {
         var cart = new Cart { UserId = userId };
-        _dbContext.cart.Add(cart);
+        _dbContext.Cart.Add(cart);
         await _dbContext.SaveChangesAsync();
         return cart;
 

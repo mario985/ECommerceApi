@@ -22,4 +22,7 @@ public class UpdateProductDto
     [Required]
     [StringLength(100)]
     public string Brand { get; set; } = string.Empty;
+    [Required]
+    [Range(1, 100000)]
+    public int Quantity{ set; get; }
 }

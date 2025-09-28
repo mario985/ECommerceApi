@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "Re7ozVruDKs=",
+  "dgSpecHash": "c9dLgpXjIHQ=",
   "success": true,
   "projectFilePath": "/Users/mariodawod/developer/backend_learning/ECommerceApi/ECommerceApi.csproj",
   "expectedPackageFiles": [
@@ -10,7 +10,6 @@
     "/Users/mariodawod/.nuget/packages/humanizer.core/2.14.1/humanizer.core.2.14.1.nupkg.sha512",
     "/Users/mariodawod/.nuget/packages/mediatr/13.0.0/mediatr.13.0.0.nupkg.sha512",
     "/Users/mariodawod/.nuget/packages/mediatr.contracts/2.0.1/mediatr.contracts.2.0.1.nupkg.sha512",
-    "/Users/mariodawod/.nuget/packages/mediatr.extensions.microsoft.dependencyinjection/11.1.0/mediatr.extensions.microsoft.dependencyinjection.11.1.0.nupkg.sha512",
     "/Users/mariodawod/.nuget/packages/microsoft.aspnetcore.authentication.jwtbearer/9.0.8/microsoft.aspnetcore.authentication.jwtbearer.9.0.8.nupkg.sha512",
     "/Users/mariodawod/.nuget/packages/microsoft.aspnetcore.cryptography.internal/9.0.8/microsoft.aspnetcore.cryptography.internal.9.0.8.nupkg.sha512",
     "/Users/mariodawod/.nuget/packages/microsoft.aspnetcore.cryptography.keyderivation/9.0.8/microsoft.aspnetcore.cryptography.keyderivation.9.0.8.nupkg.sha512",
@@ -92,18 +91,5 @@
     "/Users/mariodawod/.nuget/packages/system.threading.channels/7.0.0/system.threading.channels.7.0.0.nupkg.sha512",
     "/Users/mariodawod/.nuget/packages/zstdsharp.port/0.7.3/zstdsharp.port.0.7.3.nupkg.sha512"
   ],
-  "logs": [
-    {
-      "code": "NU1608",
-      "level": "Warning",
-      "message": "Detected package version outside of dependency constraint: MediatR.Extensions.Microsoft.DependencyInjection 11.1.0 requires MediatR (>= 11.0.0 && < 12.0.0) but version MediatR 13.0.0 was resolved.",
-      "projectPath": "/Users/mariodawod/developer/backend_learning/ECommerceApi/ECommerceApi.csproj",
-      "warningLevel": 1,
-      "filePath": "/Users/mariodawod/developer/backend_learning/ECommerceApi/ECommerceApi.csproj",
-      "libraryId": "MediatR",
-      "targetGraphs": [
-        "net9.0"
-      ]
-    }
-  ]
+  "logs": []
 }

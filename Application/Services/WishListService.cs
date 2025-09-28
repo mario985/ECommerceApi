@@ -22,7 +22,15 @@ public class WishListService : IWishListService
         }
         if (!wishlist.WishListItems.Any(ws => ws.ProductId == addToWishListDto.ProductId))
         {
-            wishlist.WishListItems.Add(new WishListItem { ProductId = addToWishListDto.ProductId, WishListId = wishlist.Id });
+            try
+            {
+                await _productRepository.GetById(addToWishListDto.ProductId);
+            }
+            catch
+            {
+                throw new KeyNotFoundException("product not found");
+            }
+                wishlist.WishListItems.Add(new WishListItem { ProductId = addToWishListDto.ProductId, WishListId = wishlist.Id });
             await _wishListRepository.UpdateAsync(wishlist);
 
         }
