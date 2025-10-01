@@ -1,4 +1,4 @@
-public interface IInvetoryService
+public interface IInventoryService
 {
     Task AddStockAsync(string productId, int quantity);
     Task ChangeStockAsync(string productId, int quantity);

@@ -23,6 +23,6 @@ public class CreateProductDto
     [StringLength(100)]
     public string Brand { get; set; } = string.Empty;
     [Required]
-    [Range(1, 100000)]
+    [Range(0, 100000)]
     public int Quantity { set; get; }
 }

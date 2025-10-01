@@ -31,7 +31,7 @@ public class AdminProductController : ControllerBase
         else return BadRequest(new List<string> { result.Message });
     }
     [HttpDelete("{id}")]
-     [Authorize(Roles ="Admin")]
+    [Authorize(Roles ="Admin")]
     public async Task<IActionResult> Delete(string id)
     {
         var result = await _adminProductService.DeleteProductAsync(id);

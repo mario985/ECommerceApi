@@ -1,7 +1,8 @@
 public interface IInventoryRepository
 {
-    Task AddStockAsync(string productId, int quantity);
-    Task UpdateStockAsync(string productId, int quantity);
-    Task<Inventory> GetByProductIdAsync(string productId);
+    Task AddAsync(Inventory inventory);
+    Task UpdateAsync(Inventory inventory);
+    Task<Inventory?> GetByProductIdAsync(string productId);
+    Task RemoveAsync(Inventory inventory);
     
 }

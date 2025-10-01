@@ -2,8 +2,8 @@ using MediatR;
 
 public class ProductCreatedHandler : INotificationHandler<ProductCreated>
 {
-    private readonly IInvetoryService _invetoryService;
-    public ProductCreatedHandler(IInvetoryService invetoryService)
+    private readonly IInventoryService _invetoryService;
+    public ProductCreatedHandler(IInventoryService invetoryService)
     {
         _invetoryService = invetoryService;
     }

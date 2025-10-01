@@ -2,8 +2,8 @@ using MediatR;
 
 public class ProductUpdatedHandler : INotificationHandler<ProductUpdatedCommand>
 {
-    private readonly IInvetoryService _invetoryService;
-    public ProductUpdatedHandler(IInvetoryService invetoryService)
+    private readonly IInventoryService _invetoryService;
+    public ProductUpdatedHandler(IInventoryService invetoryService)
     {
         _invetoryService = invetoryService;
     }

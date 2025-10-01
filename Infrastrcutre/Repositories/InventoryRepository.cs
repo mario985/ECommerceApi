@@ -1,18 +1,37 @@
+using Microsoft.EntityFrameworkCore;
 
 public class InventoryRepository : IInventoryRepository
 {
-    public Task AddStockAsync(string productId, int quantity)
+    private readonly AppDbContext _appDbContext;
+
+    public InventoryRepository(AppDbContext appDbContext)
     {
-        throw new NotImplementedException();
+        _appDbContext = appDbContext;
     }
 
-    public Task<Inventory> GetByProductIdAsync(string productId)
+    public async Task AddAsync(Inventory inventory)
     {
-        throw new NotImplementedException();
+        await _appDbContext.Inventories.AddAsync(inventory);
+        await _appDbContext.SaveChangesAsync();
     }
 
-    public Task UpdateStockAsync(string productId, int quantity)
+    public async Task<Inventory?> GetByProductIdAsync(string productId)
     {
-        throw new NotImplementedException();
+        return await _appDbContext.Inventories
+            .FirstOrDefaultAsync(p => p.ProductId == productId);
     }
+
+    public async Task UpdateAsync(Inventory inventory)
+    {
+        _appDbContext.Inventories.Update(inventory);
+        await _appDbContext.SaveChangesAsync();
+    }
+
+    public async Task RemoveAsync(Inventory inventory)
+    {
+        _appDbContext.Inventories.Remove(inventory);
+        await _appDbContext.SaveChangesAsync();
+    }
+
+   
 }
