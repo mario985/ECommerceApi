@@ -31,10 +31,7 @@ public class OrderService : IOrderService
         {
             foreach (var item in cart.CartItems)
             {
-                var inventory = await _inventoryService.GetInventoryAsync(item.ProductId);
-                if (inventory == null || inventory.Quantity < item.Quantity)
-                    throw new InvalidOperationException("out of stock");
-                await _inventoryService.ReduceQuantityAsync(inventory.ProductId, item.Quantity);
+                await _inventoryService.ReduceQuantityAsync(item.ProductId, item.Quantity);
             }
             var order = new Order
             {
@@ -46,7 +43,7 @@ public class OrderService : IOrderService
                     Price = ci.Price
 
                 }).ToList(),
-                TotalPrice = cart.CartItems.Sum(p => p.Price),
+                TotalPrice = cart.CartItems.Sum(p => p.Price * p.Quantity),
                 Status = OrderStatus.Pending
             };
             await _orderRepository.AddAsync(order);
@@ -60,5 +57,16 @@ public class OrderService : IOrderService
             throw;
 
         }
+    }
+    public async Task<OrderDto> GetAsync(int id)
+    {
+        var order= await _orderRepository.GetAsync(id);
+        return _mapper.Map<OrderDto>(order);
+    }
+
+    public async Task<List<OrderDto>> GetByUserIdAsync(string userId)
+    {
+        var orders = await _orderRepository.GetAllAsync(userId);
+        return _mapper.Map<List<OrderDto>>(orders);
     }
 }

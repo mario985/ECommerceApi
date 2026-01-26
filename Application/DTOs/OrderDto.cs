@@ -6,7 +6,7 @@ public class OrderDto
     public OrderStatus Status { set; get; }
     public decimal TotalPrice { set; get; }
     public DateTime CreatedAt { set; get; }
-    public ICollection<OrderItem>? OrderItems { set; get; }
+    public ICollection<OrderItemDto>? OrderItems { set; get; }
     
     
 }

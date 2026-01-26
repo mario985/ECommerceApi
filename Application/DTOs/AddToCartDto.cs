@@ -2,8 +2,8 @@ using System.ComponentModel.DataAnnotations;
 
 public class AddToCartDto
 {
-    [Required]
-    public string userId { set; get; }
+    
+    public string? userId { set; get; } = string.Empty;
     [Required]
     public string productId { set; get; }
     [Required]

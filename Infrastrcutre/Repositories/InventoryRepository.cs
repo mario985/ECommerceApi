@@ -20,7 +20,7 @@ public class InventoryRepository : IInventoryRepository
         return await _appDbContext.Inventories
             .FirstOrDefaultAsync(p => p.ProductId == productId);
     }
-
+    
     public async Task UpdateAsync(Inventory inventory)
     {
         _appDbContext.Inventories.Update(inventory);
@@ -33,5 +33,14 @@ public class InventoryRepository : IInventoryRepository
         await _appDbContext.SaveChangesAsync();
     }
 
-   
+    public async Task<bool> ReduceQuantityAsync(string productId, int reduceBy)
+    {
+        var rowsAffected = await _appDbContext.Database.ExecuteSqlInterpolatedAsync($@"
+        UPDATE Inventories
+        SET Quantity = Quantity - {reduceBy}
+        WHERE ProductId = {productId}
+          AND Quantity >= {reduceBy}
+        ");
+        return rowsAffected > 0 ;
+    }
 }

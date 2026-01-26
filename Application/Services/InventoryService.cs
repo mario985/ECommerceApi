@@ -21,15 +21,7 @@ public class InventoryService :IInventoryService
             existing.Quantity += quantity;
             await _inventoryRepository.UpdateAsync(existing);
         }
-        else
-        {
-            var newInventory = new Inventory
-            {
-                ProductId = productId,
-                Quantity = quantity
-            };
-            await _inventoryRepository.AddAsync(newInventory);
-        }
+        else await CreateInventoryAsync(productId , quantity);
     }
 
     public async Task ChangeStockAsync(string productId, int newQuantity)
@@ -46,33 +38,23 @@ public class InventoryService :IInventoryService
         await _inventoryRepository.UpdateAsync(inventory);
     }
 
-    public async Task<Inventory?> GetInventoryAsync(string productId)
+    public async Task<Inventory> GetInventoryAsync(string productId)
     {
-        return await _inventoryRepository.GetByProductIdAsync(productId);
+        var inventory =  await _inventoryRepository.GetByProductIdAsync(productId);
+        return (inventory==null) ?await CreateInventoryAsync(productId , 0) : inventory;
+
     }
 
     public async Task ReduceQuantityAsync(string productId, int reduceBy)
     {
         ValidateQuantity(reduceBy);
-
-        var inventory = await _inventoryRepository.GetByProductIdAsync(productId);
-        if (inventory is null)
+        await GetInventoryAsync(productId);
+        var success = await _inventoryRepository.ReduceQuantityAsync(productId , reduceBy);
+        if (!success)
         {
-            throw new KeyNotFoundException("Inventory not found");
+            throw new InvalidOperationException("insufficent stock");
         }
 
-        if (inventory.Quantity < reduceBy)
-        {
-            throw new InvalidOperationException("Insufficient stock to reduce");
-        }
-
-        inventory.Quantity -= reduceBy;
-        await _inventoryRepository.UpdateAsync(inventory);
-
-        if (inventory.Quantity <= 0)
-        {
-            await _mediator.Publish(new StockAvailabilityChangedCommand(productId));
-        }
     }
 
     public async Task RemoveAsync(string productId)
@@ -92,5 +74,16 @@ public class InventoryService :IInventoryService
         {
             throw new ArgumentException("Quantity can't be negative", nameof(quantity));
         }
+    }
+    private async Task <Inventory> CreateInventoryAsync(string productId , int quantity)
+    {
+        var newInventory = new Inventory
+            {
+                ProductId = productId,
+                Quantity = quantity
+            };
+            await _inventoryRepository.AddAsync(newInventory);
+            return  newInventory;
+            
     }
 }

@@ -18,6 +18,10 @@ public class CartRepository : ICartRepository
     {
         var cart = await GetCartByUserIdAsync(userId);
         var product = await _productRepository.GetById(productId);
+        if (product == null)
+        {
+            return cart;
+        }
         if (cart == null)
             return cart;
         var existingItem = cart.CartItems.FirstOrDefault(ci => ci.ProductId == productId);
@@ -30,13 +34,17 @@ public class CartRepository : ICartRepository
             var cartItem = new CartItem
             {
                 CartId = cart.Id,
-                Cart = cart,
                 ProductId = productId,
-                Product = product,
-                Quantity = quantity
+                Quantity = quantity,
+                Price = product.Price
             };
             cart.CartItems.Add(cartItem);
         }
+    var added = _dbContext.ChangeTracker.Entries()
+    .Where(e => e.State == EntityState.Added)
+    .Select(e => e.Entity.GetType().Name)
+    .ToList();
+    Console.WriteLine("EF Added Entities: " + string.Join(", ", added));
         await _dbContext.SaveChangesAsync();
         return cart;
     }

@@ -25,5 +25,6 @@ public class Product
     public string Description { get; set; } = string.Empty;
     [BsonElement("brand")]
     public string Brand { get; set; } = string.Empty;
+    [BsonElement("isAvailable")]
     public bool IsAvailable{ get; set; }
 }

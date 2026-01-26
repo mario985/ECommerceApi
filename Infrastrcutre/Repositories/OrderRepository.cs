@@ -8,12 +8,17 @@ public class OrderRepository : IorderRepository
     public async Task AddAsync(Order order)
     {
         await _appDbContext.Order.AddAsync(order);
-       await _appDbContext.SaveChangesAsync();
+        await _appDbContext.SaveChangesAsync();
     }
 
-    public async Task<Order?>GetAsync(int id)
+    public async Task<List<Order>> GetAllAsync(string userId)
     {
-        return await _appDbContext.Order.FirstOrDefaultAsync(o => o.Id == id);
+        return await _appDbContext.Order.Include(o => o.OrderItems).Where(o => o.UserId == userId).ToListAsync();
+    }
+
+    public async Task<Order?> GetAsync(int id)
+    {
+        return await _appDbContext.Order.Include(o => o.OrderItems).FirstOrDefaultAsync(o => o.Id == id);
     }
 
     public async Task RemoveAsync(Order order)
@@ -27,4 +32,5 @@ public class OrderRepository : IorderRepository
         _appDbContext.Order.Update(order);
         await _appDbContext.SaveChangesAsync();
     }
+    
 }

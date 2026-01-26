@@ -13,11 +13,8 @@ public class AppDbContext : IdentityDbContext<User>
     public DbSet<WishList> WishList { set; get; }
     public DbSet<Inventory> Inventories { set; get; }
     public DbSet<Order>Order{ set; get; }
+   
 }
-
-
-
-
 public class AppDbContextFactory : IDesignTimeDbContextFactory<AppDbContext>
 {
     public AppDbContext CreateDbContext(string[] args)

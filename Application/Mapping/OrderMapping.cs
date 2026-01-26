@@ -6,6 +6,7 @@ public class OrderProfile : Profile
     {
         CreateMap<Order, OrderDto>();
         CreateMap<OrderDto, Order>();
+        CreateMap<OrderItem , OrderItemDto>();
         
     }
 }

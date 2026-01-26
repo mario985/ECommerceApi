@@ -6,7 +6,6 @@ public class CartItemDto
     public int Quantity { set; get; }
     [JsonIgnore]
     public string ProductId { set; get; }
-    public ProductDto Product { set; get; }
     public decimal Price{ set; get; }
     
 }

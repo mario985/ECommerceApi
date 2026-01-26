@@ -59,18 +59,7 @@ public class CartService : ICartService
         if (cart == null) return null;
         if (!cart.CartItems.Any())
             return _mapper.Map<CartDto>(cart);
-        var productIds = cart.CartItems.Select(p => p.ProductId).ToList();
-        var products = await _productRepository.GetByIdsAsync(productIds);
-        var productDic = products.ToDictionary(p => p.Id);
         var cartDto = _mapper.Map<CartDto>(cart);
-        foreach (var itemDto in cartDto.CartItems)
-        {
-            if (productDic.TryGetValue(itemDto.ProductId, out var product))
-            {
-                itemDto.Product = _mapper.Map<ProductDto>(product);
-
-            }
-        }
         return cartDto;
         
     }

@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ZstdSharp.Unsafe;
@@ -14,6 +15,8 @@ public class CartController : ControllerBase
     [Authorize]
     public async Task<IActionResult> AddToCart(AddToCartDto addToCartDto)
     {
+        var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        addToCartDto.userId = userId;
         var cart = await _cartService.AddItemAsync(addToCartDto);
         if (cart == null)
         {
@@ -46,9 +49,10 @@ public class CartController : ControllerBase
     }
     [HttpPost("Clear")]
     [Authorize]
-    public async Task<IActionResult> ClearCart(ClearCartDto clearCartDto)
+    public async Task<IActionResult> ClearCart()
     {
-        var result = await _cartService.ClearCartAsync(clearCartDto.userId);
+        var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var result = await _cartService.ClearCartAsync(userId);
         return (result) ? Ok() : BadRequest(new List<string> { "Error couldnt clear cart" });
     }
     [HttpPost("updateQuantity")]
@@ -73,10 +77,11 @@ public class CartController : ControllerBase
         else return Ok(result.Cart);
 
     }
-    [HttpGet("{userId}")]
+    [HttpGet]
     [Authorize]
-    public async Task<IActionResult> GetCart(string userId)
+    public async Task<IActionResult> GetCart()
     {
+        var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         var cart = await _cartService.GetCartAsync(userId);
         if (cart == null)
             return NotFound();
