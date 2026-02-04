@@ -14,7 +14,7 @@ public class OrderController : ControllerBase
     public OrderController(IOrderService orderService) => _orderService = orderService;
     [HttpPost]
     [Authorize]
-    public async Task<OrderDto> PlaceOrder()
+    public async Task<PlaceOrderResult> PlaceOrder()
     {
         var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         if (string.IsNullOrEmpty(userId))

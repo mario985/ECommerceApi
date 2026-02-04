@@ -21,6 +21,11 @@ public class OrderRepository : IorderRepository
         return await _appDbContext.Order.Include(o => o.OrderItems).FirstOrDefaultAsync(o => o.Id == id);
     }
 
+    public async Task<Order?> GetbyPaymentIntentIdAsync(string id)
+    {
+        return await _appDbContext.Order.Include(o=>o.OrderItems).FirstOrDefaultAsync(o =>o.StripePaymentIntentId == id);
+    }
+
     public async Task RemoveAsync(Order order)
     {
         _appDbContext.Order.Remove(order);

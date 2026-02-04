@@ -43,4 +43,39 @@ public class InventoryRepository : IInventoryRepository
         ");
         return rowsAffected > 0 ;
     }
+
+
+      public async Task<bool> TryApplyStockTransitionAsync(string productId, int qty, StockTransition transition)
+    {
+        // IMPORTANT: This is atomic because it is ONE SQL UPDATE with a guard in WHERE.
+
+        int rowsAffected = transition switch
+        {
+            StockTransition.Reserve => await _appDbContext.Database.ExecuteSqlInterpolatedAsync($@"
+                UPDATE Inventories
+                SET Reserved = Reserved + {qty}
+                WHERE ProductId = {productId}
+                  AND (OnHand - Reserved) >= {qty};
+            "),
+
+            StockTransition.Commit => await _appDbContext.Database.ExecuteSqlInterpolatedAsync($@"
+                UPDATE Inventories
+                SET OnHand = OnHand - {qty},
+                    Reserved = Reserved - {qty}
+                WHERE ProductId = {productId}
+                  AND Reserved >= {qty};
+            "),
+
+            StockTransition.Release => await _appDbContext.Database.ExecuteSqlInterpolatedAsync($@"
+                UPDATE Inventories
+                SET Reserved = Reserved - {qty}
+                WHERE ProductId = {productId}
+                  AND Reserved >= {qty};
+            "),
+
+            _ => throw new ArgumentOutOfRangeException(nameof(transition), transition, null)
+        };
+
+        return rowsAffected > 0;
+    }
 }

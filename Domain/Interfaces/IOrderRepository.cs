@@ -4,5 +4,6 @@ public interface IorderRepository
     Task UpdateAsync(Order order);
     Task RemoveAsync(Order order);
     Task<Order?> GetAsync(int id);
+    Task<Order?> GetbyPaymentIntentIdAsync(string id);
     Task<List<Order>> GetAllAsync(string userId);
 }

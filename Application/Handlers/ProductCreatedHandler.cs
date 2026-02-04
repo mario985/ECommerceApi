@@ -9,6 +9,6 @@ public class ProductCreatedHandler : INotificationHandler<ProductCreated>
     }
     public async Task Handle(ProductCreated notification, CancellationToken cancellationToken)
     {
-        await _invetoryService.AddStockAsync(notification.ProductId, notification.quantity);
+        await _invetoryService.ChangeStockAsync(notification.ProductId, notification.quantity);
     }
 }

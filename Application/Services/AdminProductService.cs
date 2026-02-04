@@ -18,22 +18,21 @@ public class AdminProductService : IAdminProductService
     {
 
         var product = _mapper.Map<Product>(productDto);
-        product.IsAvailable = (productDto.Quantity > 0) ? true : false;
+        product.IsAvailable = false;
         await _productRepository.CreateAsync(product);
-        await _mediator.Publish(new ProductCreated(product.Id, productDto.Quantity));
+        await _mediator.Publish(new ProductCreated(product.Id, 0));
         return;
     }
     public async Task<UpdateResult> UpdateProductAsync(string id, UpdateProductDto productDto)
     {
 
         var product = _mapper.Map<Product>(productDto);
-        product.IsAvailable = (productDto.Quantity > 0) ? true : false;
         var result = await _productRepository.UpdateAsync(id, product);
         if (result.Success == true)
         {
             await _redisCacheService.RemoveAsync($"Product Id :{id}");
         }
-        await _mediator.Publish(new ProductUpdatedCommand(product.Id, productDto.Quantity));
+       // await _mediator.Publish(new ProductUpdatedCommand(product.Id, productDto.Quantity));
         return result;
         
     }

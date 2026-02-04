@@ -176,3 +176,7 @@
 /Users/mariodawod/developer/backend_learning/ECommerceApi/bin/Debug/net9.0/AutoMapper.Extensions.Microsoft.DependencyInjection.dll
 /Users/mariodawod/developer/backend_learning/ECommerceApi/bin/Debug/net9.0/Pipelines.Sockets.Unofficial.dll
 /Users/mariodawod/developer/backend_learning/ECommerceApi/bin/Debug/net9.0/StackExchange.Redis.dll
+/Users/mariodawod/developer/backend_learning/ECommerceApi/bin/Debug/net9.0/Newtonsoft.Json.dll
+/Users/mariodawod/developer/backend_learning/ECommerceApi/bin/Debug/net9.0/Stripe.net.dll
+/Users/mariodawod/developer/backend_learning/ECommerceApi/bin/Debug/net9.0/System.Configuration.ConfigurationManager.dll
+/Users/mariodawod/developer/backend_learning/ECommerceApi/bin/Debug/net9.0/System.Security.Cryptography.ProtectedData.dll

@@ -18,42 +18,29 @@ public class InventoryService :IInventoryService
         var existing = await _inventoryRepository.GetByProductIdAsync(productId);
         if (existing is not null)
         {
-            existing.Quantity += quantity;
+            existing.OnHand += quantity;
             await _inventoryRepository.UpdateAsync(existing);
         }
         else await CreateInventoryAsync(productId , quantity);
     }
 
-    public async Task ChangeStockAsync(string productId, int newQuantity)
+    public async Task ChangeStockAsync(string productId, int quantity)
     {
-        ValidateQuantity(newQuantity);
+        ValidateQuantity(quantity);
 
-        var inventory = await _inventoryRepository.GetByProductIdAsync(productId);
-        if (inventory is null)
+        var existing = await _inventoryRepository.GetByProductIdAsync(productId);
+        if (existing is not null)
         {
-            throw new KeyNotFoundException("Inventory not found");
+            existing.OnHand = quantity;
+            await _inventoryRepository.UpdateAsync(existing);
         }
-
-        inventory.Quantity = newQuantity;
-        await _inventoryRepository.UpdateAsync(inventory);
+        else await CreateInventoryAsync(productId , quantity);
     }
 
     public async Task<Inventory> GetInventoryAsync(string productId)
     {
         var inventory =  await _inventoryRepository.GetByProductIdAsync(productId);
         return (inventory==null) ?await CreateInventoryAsync(productId , 0) : inventory;
-
-    }
-
-    public async Task ReduceQuantityAsync(string productId, int reduceBy)
-    {
-        ValidateQuantity(reduceBy);
-        await GetInventoryAsync(productId);
-        var success = await _inventoryRepository.ReduceQuantityAsync(productId , reduceBy);
-        if (!success)
-        {
-            throw new InvalidOperationException("insufficent stock");
-        }
 
     }
 
@@ -80,10 +67,45 @@ public class InventoryService :IInventoryService
         var newInventory = new Inventory
             {
                 ProductId = productId,
-                Quantity = quantity
+                OnHand= quantity,
+                Reserved = 0
             };
             await _inventoryRepository.AddAsync(newInventory);
             return  newInventory;
             
+    }
+
+    public async Task ReserveStockAsync(string productId, int reduceBy)
+    {
+        ValidateQuantity(reduceBy);
+        await GetInventoryAsync(productId);
+       var success =  await _inventoryRepository.TryApplyStockTransitionAsync(productId , reduceBy , StockTransition.Reserve);
+        if (!success)
+        {
+           throw new InvalidOperationException("insufficent stock");
+        }
+
+    }
+
+    public async Task CommitReservedStockAsync(string productId, int reduceBy)
+    {
+          ValidateQuantity(reduceBy);
+        await GetInventoryAsync(productId);
+       var success =  await _inventoryRepository.TryApplyStockTransitionAsync(productId , reduceBy , StockTransition.Commit);
+        if (!success)
+        {
+           throw new InvalidOperationException("insufficent stock");
+        }
+    }
+
+    public async Task ReleaseReservedStockAsync(string productId, int reduceBy)
+    {
+          ValidateQuantity(reduceBy);
+        await GetInventoryAsync(productId);
+       var success =  await _inventoryRepository.TryApplyStockTransitionAsync(productId , reduceBy , StockTransition.Release);
+        if (!success)
+        {
+           throw new InvalidOperationException("insufficent stock");
+        }
     }
 }

@@ -6,8 +6,7 @@ using System.Text;
 using Microsoft.OpenApi.Models;
 using System.Text.Json.Serialization;
 using StackExchange.Redis;
-
-
+using Stripe;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
@@ -104,6 +103,10 @@ builder.Services.AddScoped<IInventoryRepository, InventoryRepository>();
 builder.Services.AddScoped<IorderRepository, OrderRepository>();
 builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<IStripeWebhookService , StripeWebhookService>();
+StripeConfiguration.ApiKey = builder.Configuration["Stripe:SecretKey"];
+builder.Services.AddScoped<PaymentIntentService>();
+builder.Services.AddScoped<IStripePaymentService, StripePaymentService>();
 builder.Services.AddSingleton<IConnectionMultiplexer>(sp =>
 {
     var configuration = builder.Configuration.GetConnectionString("Redis");
