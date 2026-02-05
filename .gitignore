@@ -3,7 +3,8 @@
 bin/
 obj/
 .vscode/
-appsettings.Development.json
 *.db
 *.db-shm
 *.db-wal
+appsettings.json
+appsettings.Development.json
