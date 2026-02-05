@@ -4,4 +4,6 @@ bin/
 obj/
 .vscode/
 appsettings.Development.json
-app.db/
+*.db
+*.db-shm
+*.db-wal

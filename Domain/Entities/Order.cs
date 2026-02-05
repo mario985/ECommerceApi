@@ -14,6 +14,7 @@ public class Order
     public ICollection<OrderItem>? OrderItems { set; get; }
     public string? StripePaymentIntentId { get; set; }
     public DateTime? PaymentConfirmedAt { get; set; }
+    public DateTime? ExpiresAt {set;get;}
 
     
     

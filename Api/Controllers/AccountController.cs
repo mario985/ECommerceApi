@@ -20,7 +20,7 @@ public class AccountController : ControllerBase
     public async Task<IActionResult> Register(RegisterDto register)
     {
         RegisterCommand registerCommand = new RegisterCommand
-        (register.Email, register.Password, register.UserName, register.Address);
+        (register.Email, register.Password, register.UserName);
         var result = await _mediator.Send(registerCommand);
         if (result.Succeeded)
         {

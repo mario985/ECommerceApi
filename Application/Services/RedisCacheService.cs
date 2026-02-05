@@ -9,7 +9,7 @@ public class RedisCacheService : IRedisCacheService
     {
         _db = redis.GetDatabase();
     }
-    public async Task<string> GetAsync(string key)
+    public async Task<string?> GetAsync(string key)
     {
         return await _db.StringGetAsync(key);
     }

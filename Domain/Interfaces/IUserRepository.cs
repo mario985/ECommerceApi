@@ -12,4 +12,5 @@ public interface IUserRepository
     Task<string> GetRole(User user);
     Task<User?> FindByRefreshTokenAsync(string token);
     public  Task<User?> GetByEmailWithTokensAsync(string email);
+    public Task<bool> DeleteUserAsync(User user);
 }

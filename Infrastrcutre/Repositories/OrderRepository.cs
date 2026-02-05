@@ -37,5 +37,16 @@ public class OrderRepository : IorderRepository
         _appDbContext.Order.Update(order);
         await _appDbContext.SaveChangesAsync();
     }
+    public async Task<List<Order>> GetExpiredPendingAsync(DateTime utcNow, int take = 50)
+{
+    return await _appDbContext.Order
+        .Include(o => o.OrderItems)
+        .Where(o => o.Status == OrderStatus.PendingPayment &&
+                    o.ExpiresAt <= utcNow)
+        .OrderBy(o => o.ExpiresAt)
+        .Take(take)
+        .ToListAsync();
+}
+
     
 }

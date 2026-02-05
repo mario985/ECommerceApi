@@ -67,4 +67,9 @@ public class UserRepository : IUserRepository
     {
         return await _context.Users.Include(t => t.RefreshTokens).SingleOrDefaultAsync(u => u.RefreshTokens.Any(t => t.Token == token));
     }
+    public async Task<bool> DeleteUserAsync(User user)
+    {
+        _context.Users.Remove(user);
+        return await _context.SaveChangesAsync() > 0;
+    }
 }

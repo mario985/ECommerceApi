@@ -5,7 +5,6 @@ public record RegisterCommand
 (
 string Email,
 string Password,
-string FullName,
-string Address
+string FullName
 )
 :IRequest<IdentityResult>;

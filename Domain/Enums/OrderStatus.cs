@@ -3,5 +3,8 @@ public enum OrderStatus
     PendingPayment,
     Paid,
     PaymentFailed,
-    Cancelled
+    Cancelled,
+     Shipped,
+    Delivered,
+    Refunded
 }

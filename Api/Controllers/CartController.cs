@@ -24,10 +24,11 @@ public class CartController : ControllerBase
         }
         return Ok(cart);
     }
-    [HttpDelete("remove/{userId}/{productId}")]
+    [HttpDelete("remove/{productId}")]
     [Authorize]
-    public async Task<IActionResult> RemoveFromCart(string userId , string productId)
+    public async Task<IActionResult> RemoveFromCart( string productId)
     {
+         var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;   
         productId = productId.Trim();
         var result = await _cartService.RemoveFromCartAsync(new RemoveFromCartDto{UserId=userId , ProductId = productId});
         if (!result.IsSuccess && result.Cart != null)

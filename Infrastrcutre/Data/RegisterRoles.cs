@@ -29,7 +29,6 @@ public static class IdentitySeeder
             {
                 UserName = defaultAdminEmail,
                 Email = defaultAdminEmail,
-               Address = defaultAddress
             };
 
             var result = await userManager.CreateAsync(newAdmin, defaultAdminPassword);

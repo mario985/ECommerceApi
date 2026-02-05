@@ -52,6 +52,8 @@ public class OrderService : IOrderService
                 }).ToList(),
                 TotalPrice = cart.CartItems.Sum(p => p.Price * p.Quantity),
                 Status = OrderStatus.PendingPayment,
+                CreatedAt = DateTime.UtcNow,
+                ExpiresAt = DateTime.UtcNow.AddMinutes(5),
                 Currency = "egp" // store this on order; better than hardcoding
             };
 
@@ -91,5 +93,16 @@ public class OrderService : IOrderService
     {
         var orders = await _orderRepository.GetAllAsync(userId);
         return _mapper.Map<List<OrderDto>>(orders);
+    }
+    public async Task<bool> UpdateOrderStatusAsync(int orderId, string status)
+    {
+        if (!Enum.TryParse<OrderStatus>(status, out var orderStatus))
+            return false;
+        var order = await _orderRepository.GetAsync(orderId);
+        if (order == null)
+            return false;
+        order.Status = orderStatus;
+        await _orderRepository.UpdateAsync(order);
+        return true;
     }
 }
