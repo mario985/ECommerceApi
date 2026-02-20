@@ -57,10 +57,7 @@ public class CartService : ICartService
     private async Task<CartDto?> MapCartToDtoAsync(Cart? cart)
     {
         if (cart == null) return null;
-        if (!cart.CartItems.Any())
-            return _mapper.Map<CartDto>(cart);
-        var cartDto = _mapper.Map<CartDto>(cart);
-        return cartDto;
+        return _mapper.Map<CartDto>(cart);
         
     }
 }

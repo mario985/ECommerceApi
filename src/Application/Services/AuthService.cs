@@ -15,10 +15,6 @@ public class AuthService : IAuthService
     public async Task<IdentityResult> RegisterUser(User user, string Password)
     {
        return await _userRepository.AddAsync(user, Password);
-       
-       
-       
-
     }
     public async Task<AuthModel> LogInAsync(string Email, string Password)
     {
