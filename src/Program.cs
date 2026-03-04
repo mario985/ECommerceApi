@@ -7,6 +7,8 @@ using Microsoft.OpenApi.Models;
 using System.Text.Json.Serialization;
 using StackExchange.Redis;
 using Stripe;
+using MongoDB.Driver;
+using Microsoft.Extensions.Options;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
@@ -84,7 +86,15 @@ builder.Services.AddAuthentication(options =>
     });
 builder.Services.AddAutoMapper(typeof(ProductProfile));
 builder.Services.Configure<MongoDbSetting>(
-builder.Configuration.GetSection("MongoDb"));
+    builder.Configuration.GetSection("MongoDb")
+);
+
+builder.Services.AddSingleton<IMongoDatabase>(sp =>
+{
+    var options = sp.GetRequiredService<IOptions<MongoDbSetting>>().Value;
+    var client = new MongoClient(options.ConnectionURI);
+    return client.GetDatabase(options.DatabaseName);
+});
 builder.Services.AddAuthorization();
 builder.Services.AddSingleton<MongoDbInitializer>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
@@ -147,3 +157,4 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 app.Run();
+public partial class Program { }

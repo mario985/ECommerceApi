@@ -5,11 +5,9 @@ using MongoDB.Bson;
 public class ProductRepository :IProductRepository
 {
     private readonly IMongoCollection<Product> _products;
-    public ProductRepository(IOptions<MongoDbSetting> mongoDbSettings)
+    public ProductRepository(IMongoDatabase database)
     {
-        var client = new MongoClient(mongoDbSettings.Value.ConnectionURI);
-        var dataBase = client.GetDatabase(mongoDbSettings.Value.DatabaseName);
-        _products = dataBase.GetCollection<Product>(mongoDbSettings.Value.CollectionName);
+        _products = database.GetCollection<Product>("Products");
     }
     public async Task<List<Product>> GetProductsAsync(
     string?name,

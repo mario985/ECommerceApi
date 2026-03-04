@@ -6,6 +6,10 @@ public class ApiResponseFilter : IActionFilter
 
     public void OnActionExecuted(ActionExecutedContext context)
     {
+        if (context.Exception != null)
+    {
+        return; // don't wrap exception responses
+    }
         if (context.Result is ObjectResult objectResult)
         {
             bool isSuccess = objectResult.StatusCode >= 200 && objectResult.StatusCode < 300;

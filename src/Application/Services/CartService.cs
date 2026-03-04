@@ -7,17 +7,20 @@ public class CartService : ICartService
     private readonly ICartRepository _cartRepository;
     private readonly IMapper _mapper;
     private readonly IProductRepository _productRepository;
+    private readonly IInventoryService _inventoryService;
 
 
-    public CartService(ICartRepository cartRepository, IMapper mapper, IProductRepository productRepository)
+    public CartService(ICartRepository cartRepository, IMapper mapper, IProductRepository productRepository ,IInventoryService inventoryService )
     {
         _cartRepository = cartRepository;
         _mapper = mapper;
         _productRepository = productRepository;
+        _inventoryService = inventoryService;
     }
     public async Task<CartDto?> AddItemAsync(AddToCartDto addToCartDto)
     {
-
+        var product = await _inventoryService.GetInventoryAsync(addToCartDto.productId);
+        if(product.Availaible<addToCartDto.Quantity)return null;
         var cart = await _cartRepository.AddToCartAsync(addToCartDto.userId, addToCartDto.productId, addToCartDto.Quantity);
         return await MapCartToDtoAsync(cart);
 

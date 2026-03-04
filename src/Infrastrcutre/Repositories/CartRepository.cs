@@ -17,14 +17,10 @@ public class CartRepository : ICartRepository
     public async Task<Cart?> AddToCartAsync(string userId, string productId, int quantity)
     {
         var cart = await GetCartByUserIdAsync(userId);
+        if (cart == null) return cart;
         var product = await _productRepository.GetById(productId);
-        if (product == null)
-        {
-            return cart;
-        }
-        if (cart == null)
-            return cart;
-        var existingItem = cart.CartItems.FirstOrDefault(ci => ci.ProductId == productId);
+        if (product == null ) return cart;
+        var existingItem = cart.CartItems?.FirstOrDefault(ci => ci.ProductId == productId);
         if (existingItem != null)
         {
             existingItem.Quantity += quantity;
@@ -40,11 +36,6 @@ public class CartRepository : ICartRepository
             };
             cart.CartItems.Add(cartItem);
         }
-    var added = _dbContext.ChangeTracker.Entries()
-    .Where(e => e.State == EntityState.Added)
-    .Select(e => e.Entity.GetType().Name)
-    .ToList();
-    Console.WriteLine("EF Added Entities: " + string.Join(", ", added));
         await _dbContext.SaveChangesAsync();
         return cart;
     }
@@ -82,7 +73,7 @@ public class CartRepository : ICartRepository
     public async Task<Cart?> GetCartByUserIdAsync(string userId)
     {
         var cart = await _dbContext.Cart.Include(c => c.CartItems).FirstOrDefaultAsync(c => c.UserId == userId);
-      
+        if(cart==null)cart = await AddCartAsync(userId);
         return cart;
 
 
@@ -102,7 +93,7 @@ public class CartRepository : ICartRepository
     }
     public async Task<Cart> AddCartAsync(string userId)
     {
-        var cart = new Cart { UserId = userId };
+        var cart = new Cart { UserId = userId  ,CartItems = new List<CartItem>()};
         _dbContext.Cart.Add(cart);
         await _dbContext.SaveChangesAsync();
         return cart;

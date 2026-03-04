@@ -11,6 +11,11 @@ public class CartController : ControllerBase
     {
         _cartService = cartService;
     }
+    [HttpGet("test")]
+    public async Task<IActionResult> integerationTest()
+    {
+        return Ok();
+    }
     [HttpPost("Add")]
     [Authorize]
     public async Task<IActionResult> AddToCart(AddToCartDto addToCartDto)
@@ -36,7 +41,7 @@ public class CartController : ControllerBase
             return Ok(new ApiResponseDto<CartDto>
             (
                 true,
-                "item couldnt be removed",
+                "item is removed successefully",
                 result.Cart,
                 new List<string> { result.Message }
 
