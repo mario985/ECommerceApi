@@ -9,14 +9,17 @@ using StackExchange.Redis;
 using Stripe;
 using MongoDB.Driver;
 using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Authentication.Google;
+using System.Text;
+
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddControllers(Options =>
 {
     Options.Filters.Add<ApiResponseFilter>();
-});
-builder.Services.AddControllers()
+});builder.Services.AddControllers()
     .AddJsonOptions(options =>
     {
         options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
@@ -32,6 +35,11 @@ builder.Services.AddDbContext<AppDbContext>(Options =>
 builder.Services.AddIdentity<User, IdentityRole>()
       .AddEntityFrameworkStores<AppDbContext>()
       .AddDefaultTokenProviders();
+builder.Services.Configure<IdentityOptions>(options =>
+{
+    options.User.AllowedUserNameCharacters ="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+ ";
+
+});
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
@@ -66,8 +74,7 @@ builder.Services.AddSwaggerGen(options =>
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
 })
     .AddJwtBearer(options =>
     {
@@ -83,6 +90,13 @@ builder.Services.AddAuthentication(options =>
                 Encoding.UTF8.GetBytes(builder.Configuration["JWT:Key"])),
             ClockSkew = TimeSpan.Zero
         };
+    })
+    .AddGoogle(Options =>
+    {
+        Options.ClientId= builder.Configuration["Google:ClientId"];
+        Options.ClientSecret = builder.Configuration["Google:ClientSecret"];
+        Options.CallbackPath = "/signin-google"; // ASP.NET handles this silently
+    
     });
 builder.Services.AddAutoMapper(typeof(ProductProfile));
 builder.Services.Configure<MongoDbSetting>(

@@ -13,4 +13,6 @@ public interface IUserRepository
     Task<User?> FindByRefreshTokenAsync(string token);
     public  Task<User?> GetByEmailWithTokensAsync(string email);
     public Task<bool> DeleteUserAsync(User user);
+    public Task<User?> GetByGoogleIdAsync(string googleId);
+    public Task<IdentityResult> AddGoogleUserAsync(User user);
 }

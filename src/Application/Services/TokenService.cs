@@ -16,7 +16,9 @@ public class TokenService : ItokenService
             new Claim(JwtRegisteredClaimNames.Email, UserName),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             new Claim(ClaimTypes.Role, Role),
-            new Claim(ClaimTypes.NameIdentifier ,user.Id.ToString())
+            new Claim(ClaimTypes.NameIdentifier ,user.Id.ToString()),
+            new Claim("google_id", user.GoogleId ?? string.Empty)
+
 
         };
         var key = new SymmetricSecurityKey(

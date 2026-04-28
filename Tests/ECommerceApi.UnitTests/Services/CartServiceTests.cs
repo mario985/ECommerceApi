@@ -6,13 +6,15 @@ public class CartServiceTests
     private readonly Mock<ICartRepository>_cartRepositoryMock;
     private readonly Mock<IMapper>_mapperMock;
     private readonly Mock<IProductRepository>_productRepositoryMock;
+    private readonly Mock<IInventoryService>_inventoryServiceMock;
     private readonly ICartService _cartService;
     public CartServiceTests()
     {
         _cartRepositoryMock = new Mock<ICartRepository>();
         _mapperMock = new Mock<IMapper>();
         _productRepositoryMock = new Mock<IProductRepository>();
-        _cartService = new CartService(_cartRepositoryMock.Object , _mapperMock.Object , _productRepositoryMock.Object);
+        _inventoryServiceMock = new Mock<IInventoryService>();
+        _cartService = new CartService(_cartRepositoryMock.Object , _mapperMock.Object , _productRepositoryMock.Object , _inventoryServiceMock.Object);
     }
     [Fact]
     public async Task AddItemAsync_ShouldReturnMappedCart()

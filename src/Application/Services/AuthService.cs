@@ -118,4 +118,55 @@ public class AuthService : IAuthService
         await _userRepository.UpdateAsync(user);
         return true;
     }
+        public async Task<AuthModel> FindOrCreateByGoogleIdAsync(string email, string name, string googleId)
+    {
+        AuthModel response = new AuthModel();
+
+        // Check if user already exists by GoogleId
+        var user = await _userRepository.GetByGoogleIdAsync(googleId);
+
+        if (user == null)
+        {
+            // First time login with Google — create the user
+            user = new User
+            {
+                UserName = name,
+                Email    = email,
+                GoogleId = googleId,
+            };
+
+            var result = await _userRepository.AddGoogleUserAsync(user);
+
+            if (!result.Succeeded)
+            {
+                response.IsAuthenticated = false;
+                response.Message = "Failed to create user";
+                return response;
+            }
+        }
+
+        // From here it's identical to your LogInAsync
+        var role = await _userRepository.GetRole(user);
+        var token = _tokenService.GenerateToken(user.UserName, role, user);
+        var newRefreshToken = _refreshTokenService.GenerateRefreshToken();
+
+        foreach (var tok in user.RefreshTokens.Where(t => t.IsActive))
+        {
+            tok.RevokedOn = DateTime.UtcNow;
+        }
+
+        user.RefreshTokens.Add(newRefreshToken);
+        await _userRepository.UpdateAsync(user);
+
+        response.IsAuthenticated        = true;
+        response.Message                = "User logged in with Google successfully";
+        response.Email                  = user.Email;
+        response.UserName               = user.UserName;
+        response.Role                   = role;
+        response.Token                  = token;
+        response.RefreshToken           = newRefreshToken.Token;
+        response.RefreshTokenExpiration = newRefreshToken.ExpiresOn;
+
+        return response;
+    }
 }

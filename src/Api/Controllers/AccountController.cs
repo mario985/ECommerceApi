@@ -47,7 +47,7 @@ public class AccountController : ControllerBase
 
     }
     [HttpGet("test")]
-    [Authorize(Roles = "Admin")]
+    [Authorize]
     public async Task<IActionResult> Test()
     {
         return Ok("Hello registerd Admin");

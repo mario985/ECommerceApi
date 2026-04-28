@@ -7,4 +7,5 @@ public interface IAuthService
     Task<AuthModel> RefreshTokenAsync(string token);
     Task<bool> RevokeTokenAsync(string token);
     Task<bool> RevokeAllTokensAsync(string token);
+    Task<AuthModel> FindOrCreateByGoogleIdAsync(string email , string name , string googleId);
 }

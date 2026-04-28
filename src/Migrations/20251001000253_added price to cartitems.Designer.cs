@@ -99,6 +99,7 @@ namespace ECommerceApi.Migrations
                     b.Property<string>("NormalizedName")
                         .HasMaxLength(256)
                         .HasColumnType("TEXT");
+                        
 
                     b.HasKey("Id");
 

@@ -7,5 +7,6 @@ public class User : IdentityUser
     public Cart? Cart { set; get; }
     public WishList? WishList { set; get; }
     public List<RefreshToken>? RefreshTokens { set; get; } = new();
+    public string? GoogleId {set;get;}
 
 }

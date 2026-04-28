@@ -72,4 +72,19 @@ public class UserRepository : IUserRepository
         _context.Users.Remove(user);
         return await _context.SaveChangesAsync() > 0;
     }
+
+    public async Task<User?> GetByGoogleIdAsync(string googleId)
+    {
+        return await _context.Users.FirstOrDefaultAsync(u =>u.GoogleId ==googleId);
+    }
+
+    public async Task<IdentityResult> AddGoogleUserAsync(User user)
+    {
+         var result = await _userManager.CreateAsync(user);
+        if (result.Succeeded)
+        {
+            await _userManager.AddToRoleAsync(user , "user");
+        }
+        return result;
+    }
 }

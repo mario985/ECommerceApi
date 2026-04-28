@@ -54,7 +54,7 @@ public class AuthEndPointTests : IClassFixture<CustomWebApplicationFactory>
         var response = await _client.PostAsJsonAsync("/Api/Account/Register", body);
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
     }
-    [Fact]
+    [Fact]  
     public async Task Register_MissingFields_Returns400()
     {
         var body = new { Email = "" , Password = "", UserName = "" };
